@@ -4,10 +4,10 @@ sstack segment stack
 sstack ends  
 
 sdata segment
-	cadena db '1945863189589753355','$' ; la variable cadena donde va a contener el mensaje que vamos analizar
+	cadena db '987456321','$' ; la variable cadena donde va a contener el mensaje que vamos analizar
     NUM equ $-cadena    ; Donde se guardará el tamaño de la cadena
    ordenado db 10,13,'Numeros ordenados ',' $'  ; Mensaje que mostrará en pantalla 
-
+   desordenado db 10,13,'Numeros ordenados ',' $'  ; Mensaje que mostrará en pantalla 
 sdata ends 
 
 scode SEGMENT 'CODE'
@@ -17,6 +17,15 @@ scode SEGMENT 'CODE'
         MOV ds, AX	
         MOV DX,0000H    ; inicializamos DX en ceros
 
+        MOV AH, 09H                     ; Mueve al registro AH la funcion 09H de la interrupcion 21h
+        LEA DX, desordenado                ; Mueve a DX lo que va a mostrar en consola 
+        INT 21H                         ; activa la interrupcion 21H
+
+        MOV AH, 09H
+        LEA DX, cadena
+        INT 21H
+
+        
         MOV CX,NUM    ; movemos a cx, el valor del tamaño de la cadena 
         SUB CX,2
         FORX:           ; creamos etiqueta FORX
