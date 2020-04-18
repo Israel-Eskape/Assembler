@@ -125,10 +125,21 @@ scode SEGMENT 'CODE'
                 MOV BH,45
             JMP SIGUIENTE
         MULT:
-            MOV AH,02H
-            MOV DX,'3'
-            INT 21H
+            CLEAN
+            PRINT msgDig
+            READ
+            MOV BL,AL
+            PRINT msgDig
+            READ
+            MUL BL
+            PRINT msgRes
+            AAM
+            MOV BX,AX
+            ADD BX,3030H
+            PRINTDIG BH
+            PRINTDIG BL
 
+            READ
             JMP MENU
         DIVI:
             MOV AH,02H
@@ -136,8 +147,6 @@ scode SEGMENT 'CODE'
             INT 21H 
 
             JMP MENU               
-
-       
 
     Princ ENDP
 scode ENDS
