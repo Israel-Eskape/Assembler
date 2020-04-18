@@ -1,7 +1,11 @@
-
 PRINT MACRO mensaje
     MOV AH,09H
     LEA DX, mensaje
+    INT 21H
+ENDM
+PRINTDIG MACRO digito
+    MOV AH,02H
+    MOV DL,digito
     INT 21H
 ENDM
 READ MACRO 
@@ -54,7 +58,7 @@ scode SEGMENT 'CODE'
             CMP AL,2
                 JE RESTA
             CMP AL,3
-                JE MULT
+                JE MULT1
             CMP AL,4
                 JE DIV1
             CMP AL,5
@@ -87,25 +91,39 @@ scode SEGMENT 'CODE'
             SUB BH,01H
             
             PRINT msgRes
+            PRINTDIG BH
+            PRINTDIG BL  
 
-            mov ah,02h
-            mov dl,bh
-            int 21h
-    
-            mov ah,02h
-            mov dl,bl
-            int 21h
-            
             READ
             JMP MENU
         DIV1:
             JMP DIVI
-        RESTA:
-            MOV AH,02H
-            MOV DX,'2'
-            INT 21H
-
+        MULT1:
+            JMP MULT
+        RESTA:      
+            CLEAN
+            PRINT msgDig
+            READ
+            MOV BL,AL
+            PRINT msgDig
+            READ
+            CMP BL,AL
+                JB CAMBIAR
+            SIGUIENTE:
+            SUB BL,AL
+            
+            ADD BL,30H
+            PRINT msgRes
+            PRINTDIG BH
+            PRINTDIG BL
+            READ
             JMP MENU
+            CAMBIAR:
+                MOV CL,AL
+                MOV AL,BL
+                MOV BL,CL
+                MOV BH,45
+            JMP SIGUIENTE
         MULT:
             MOV AH,02H
             MOV DX,'3'
