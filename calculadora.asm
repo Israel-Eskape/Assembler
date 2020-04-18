@@ -74,7 +74,7 @@ scode SEGMENT 'CODE'
             PRINT msgDig
             READ
             
-            MOV DL,AL
+            MOV BL,AL
 
             PRINT msgDig
             READ
