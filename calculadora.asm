@@ -30,16 +30,16 @@ sstack segment stack
     db 32 DUP('stack--') 
 sstack ends  
 sdata segment
-    msgMenu DB '   CALCULADORA',13,10
-        DB '1.- SUMA',13,10
-        DB '2.- RESTA',13,10
-        DB '3.- MULTIPLICACI?N',13,10
-        DB '4.- DIVISI?N',13,10
-        DB '5.- EXIT',13,10,13,10
-        DB 'SELECCIONE UNA OPCI?N    $'
-    msgDig DB 13,10,'INGRESE UN DIGITO  ','$'
-    msgRes DB 13,10,'EL RESULTADO = ','$'
-    msgOpIN DB 13,10,'OPCION INVALIDA $'
+    msgMenu DB '       CALCULADORA',13,10
+        DB '    1.- SUMA',13,10
+        DB '    2.- RESTA',13,10
+        DB '    3.- MULTIPLICACI?N',13,10
+        DB '    4.- DIVISI?N',13,10
+        DB '    5.- EXIT',13,10,13,10
+        DB '    SELECCIONE UNA OPCI?N    $'
+    msgDig DB 13,10,'   INGRESE UN DIGITO  ','$'
+    msgRes DB 13,10,10,'       EL RESULTADO = ','$'
+    msgOpIN DB 13,10,'  OPCION INVALIDA $'
     msgError DB 13,10,10,'          ERROR NO SE PUEDE DIVIDIR ENTRE 0 $'
 sdata ends 
 scode SEGMENT 'CODE'
@@ -170,7 +170,7 @@ scode SEGMENT 'CODE'
             MOV BL,CH
             CMP BL,30H
                 JE SIGUIENTEDIV
-            PRINTDIG 2CH
+            PRINTDIG 2BH
             PRINTDIG CL
 
             CALL FRACCION
