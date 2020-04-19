@@ -40,7 +40,7 @@ sdata segment
     msgDig DB 13,10,'INGRESE UN DIGITO  ','$'
     msgRes DB 13,10,'EL RESULTADO = ','$'
     msgOpIN DB 13,10,'OPCION INVALIDA $'
-    msgError DB 13,10,'NO SE PUEDE DIVIDIR ENTRE 0 $'
+    msgError DB 13,10,10,'          ERROR NO SE PUEDE DIVIDIR ENTRE 0 $'
 sdata ends 
 scode SEGMENT 'CODE'
     Assume ss:sstack, ds:sdata, cs:scode
@@ -142,12 +142,59 @@ scode SEGMENT 'CODE'
             READ
             JMP MENU
         DIVI:
-            MOV AH,02H
-            MOV DX,'4'
-            INT 21H 
+            CLEAN
+            PRINT msgDig
+            READ
+            MOV BL,AL
+            PRINT msgDig
+            READ
+            CMP AL,0
+                JE ERROR
+            CMP AL,BL
+                JA DIVM
 
+            MOV BH,AL
+            MOV AL,BL
+            MOV AH,00H
+            DIV BH
+            MOV BL,AL
+            MOV CH,AH
+            
+            ADD BX,3030H
+            ADD CH,30H
+
+            PRINT msgRes
+            
+            PRINTDIG BL
+           
+            MOV BL,CH
+            CMP BL,30H
+                JE SIGUIENTEDIV
+            PRINTDIG 2CH
+            PRINTDIG CL
+
+            CALL FRACCION
+
+            SIGUIENTEDIV:
+            READ
             JMP MENU               
+        
+            DIVM:
+                MOV BH,AL
+                ADD BX,3030H
+                PRINT msgRes
+                CALL FRACCION
+            JMP SIGUIENTEDIV
 
+            ERROR:
+                PRINT msgError
+            JMP SIGUIENTEDIV
     Princ ENDP
+    FRACCION PROC
+        PRINTDIG BL
+        PRINTDIG 2FH
+        PRINTDIG BH
+        RET
+    FRACCION ENDP
 scode ENDS
 END Princ
