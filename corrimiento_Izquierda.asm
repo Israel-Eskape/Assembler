@@ -29,9 +29,9 @@ scode SEGMENT 'CODE'            ;Start del segmento de Código
         mov bl,10100001B        ; Se mueve a bl un numero en binario
         rol bl,1                ; Realiza un corrimiento a la izquierda con ROL
 
-    rotar:                      ; Se crea una etiqueta con el nombre de rotar para imprimir el numero en binario del corrimiento
-        rol bl,1                ; Realizamos un corrimiento a la izquierda para visualizar si se realiza acarreo o no
-        jc imprime_1            ; Si se realiza acarreo saltar a la etiqueta imprimir 1
+    rotar:                      ; Etiqueta donde se va a imprimir el numero en binario del corrimiento 
+        rol bl,1                ; Se realiza corrimiento a la izquierda para visualizar los digitos que se van a imprimir
+        jc imprime_1            ; Si se realiza acarreo saltar a la etiqueta imprimir 1.
        
     imprime_0:                  ; Se crea la etiqueta imprime_0 
         mov ah,02h              ; Se mueve a ah,02 que es la funcion de imprimir caracter
